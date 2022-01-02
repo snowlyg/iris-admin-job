@@ -5,13 +5,11 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/snowlyg/helper/global"
 	"github.com/snowlyg/iris-admin/server/cron_server"
 	"github.com/snowlyg/iris-admin/server/database"
 	"github.com/snowlyg/iris-admin/server/database/orm"
 	"github.com/snowlyg/iris-admin/server/database/scope"
 	"github.com/snowlyg/iris-admin/server/zap_server"
-	"gorm.io/gorm"
 )
 
 var ErrCronExpression = errors.New("错误的CRON表达式")

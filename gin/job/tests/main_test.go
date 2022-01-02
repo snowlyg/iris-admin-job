@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	gin_job "github.com/iris-admin-job/gin"
-	"github.com/iris-admin-job/gin/job"
 	"github.com/snowlyg/httptest"
+	job_gin "github.com/snowlyg/iris-admin-job/gin"
+	"github.com/snowlyg/iris-admin-job/gin/job"
 	"github.com/snowlyg/iris-admin/server/web"
 	web_tests "github.com/snowlyg/iris-admin/server/web/tests"
 	"github.com/snowlyg/iris-admin/server/web/web_gin"
@@ -21,7 +21,7 @@ var TestClient *httptest.Client
 func TestMain(m *testing.M) {
 	web.CONFIG.System.Level = "test"
 	var uuid string
-	uuid, TestServer = web_tests.BeforeTestMainGin(gin_job.PartyFunc, gin_job.SeedFunc)
+	uuid, TestServer = web_tests.BeforeTestMainGin(job_gin.PartyFunc, job_gin.SeedFunc)
 
 	go job.StartJob() // 服务监控
 
@@ -31,11 +31,7 @@ func TestMain(m *testing.M) {
 	web_tests.AfterTestMain(uuid, true)
 	job.StopJob()
 
-	err := job.Remove()
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = web.Remove()
+	err := web.Remove()
 	if err != nil {
 		fmt.Println(err)
 	}

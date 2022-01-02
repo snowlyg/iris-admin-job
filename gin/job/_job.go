@@ -22,8 +22,8 @@ func (j *YourJob) Run() {
 	}
 }
 
-// yourJobRun 扫描设备日志
+// yourJobRun
 func yourJobRun() error {
-
+	// do something here...
 	return nil
 }

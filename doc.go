@@ -1,3 +1,4 @@
+/**
 <h1 align="center">IrisAdminJob</h1>
 
 [IrisAdminJob](https://www.github.com/snowlyg/iris-admin-job) 项目为一个任务管模块插件,可以为 [IrisAdmin](https://www.github.com/snowlyg/iris-admin) 项目快速集成任务管理API.
@@ -25,3 +26,6 @@ func main() {
 }
 
 ```
+*/
+
+package doc

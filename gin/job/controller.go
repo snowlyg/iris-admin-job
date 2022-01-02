@@ -77,22 +77,6 @@ func ModifyJobSpec(ctx *gin.Context) {
 	response.Ok(ctx)
 }
 
-// HoldService 服务保持
-func HoldService(ctx *gin.Context) {
-	holdSerJob := &HoldServiceJob{}
-	if errs := ctx.ShouldBindJSON(holdSerJob); errs != nil {
-		response.FailWithMessage(errs.Error(), ctx)
-		return
-	}
-	err := LogicHoldService(holdSerJob)
-	if err != nil {
-		response.FailWithMessage(err.Error(), ctx)
-		return
-	} else {
-		response.Ok(ctx)
-	}
-}
-
 // ExecJob 执行任务
 func ExecJob(ctx *gin.Context) {
 	var req request.GetById

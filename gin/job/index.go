@@ -11,7 +11,6 @@ func Group(app *gin.RouterGroup) {
 		portRouter.GET("/list", All)
 		portRouter.POST("/modifyStatus/:id", ModifyStatus)
 		portRouter.POST("/modifyJobSpec/:id", ModifyJobSpec)
-		portRouter.POST("/hold", HoldService)
 		portRouter.GET("/execJob/:id", ExecJob)
 	}
 }
