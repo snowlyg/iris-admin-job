@@ -6,9 +6,9 @@ require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/snowlyg/httptest v0.0.1
+	github.com/snowlyg/httptest v0.0.2-alpha
 	github.com/snowlyg/iris-admin v1.1.2
-	github.com/snowlyg/iris-admin-rbac v0.0.3
+	github.com/snowlyg/iris-admin-rbac v0.0.4-alpha
 	github.com/snowlyg/multi v0.0.2
 	gorm.io/gorm v1.22.4
 )
