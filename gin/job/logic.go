@@ -146,19 +146,6 @@ func syncJob(jobName, spec, desc string, job cron.Job) error {
 			return err
 		}
 	}
-	//  else if err == nil {
-	// 	entryId, err := cron_server.CronInstance().AddJob(response.Spec, job)
-	// 	if err != nil {
-	// 		zap_server.ZAPLOG.Error(err.Error())
-	// 		return err
-	// 	}
-	// 	data := map[string]interface{}{"status": "running", "entry_id": entryId}
-	// 	err = database.Instance().Model(&Job{}).Where("id = ?", response.Id).Updates(data).Error
-	// 	if err != nil {
-	// 		zap_server.ZAPLOG.Error(err.Error())
-	// 		return err
-	// 	}
-	// }
 
 	return nil
 }
