@@ -62,8 +62,23 @@ func (item *Job) Delete(db *gorm.DB, scopes ...func(db *gorm.DB) *gorm.DB) error
 	return nil
 }
 
+var BuiltinJobs = &BuiltinJob{jobs: make(map[string]cron.Job, 100)}
+
 // 定义内置任务
 type BuiltinJob struct {
 	sync.RWMutex
 	jobs map[string]cron.Job
+}
+
+func (bj *BuiltinJob) AddBuiltinJob(name, spec, desc string, job cron.Job) error {
+	BuiltinJobs.RLock()
+	defer BuiltinJobs.RUnlock()
+	bj.jobs[name] = job
+	return syncJob(name, spec, desc, job)
+}
+
+func (bj *BuiltinJob) GetBuiltinJob(name string) cron.Job {
+	BuiltinJobs.RLock()
+	defer BuiltinJobs.RUnlock()
+	return bj.jobs[name]
 }

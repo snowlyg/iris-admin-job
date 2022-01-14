@@ -5,18 +5,17 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/snowlyg/helper/str"
 	"github.com/snowlyg/httptest"
 	"github.com/snowlyg/iris-admin-job/gin/job"
 	rbac "github.com/snowlyg/iris-admin-rbac/gin"
+	"github.com/snowlyg/iris-admin/server/web"
 	"github.com/snowlyg/iris-admin/server/web/web_gin/response"
 )
 
 func TestJobList(t *testing.T) {
-	if TestServer == nil {
-		t.Error("测试服务客户端为空")
-		return
-	}
-	TestClient = TestServer.GetTestLogin(t, rbac.LoginUrl, rbac.LoginResponse)
+	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
+	TestClient.Login(rbac.LoginUrl, nil)
 	if TestClient == nil {
 		return
 	}
@@ -48,11 +47,8 @@ func TestJobList(t *testing.T) {
 }
 
 func TestModifyStatus(t *testing.T) {
-	if TestServer == nil {
-		t.Error("测试服务客户端为空")
-		return
-	}
-	TestClient = TestServer.GetTestLogin(t, rbac.LoginUrl, rbac.LoginResponse)
+	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
+	TestClient.Login(rbac.LoginUrl, nil)
 	if TestClient == nil {
 		return
 	}
@@ -76,11 +72,8 @@ func TestModifyStatus(t *testing.T) {
 }
 
 func TestModifyJobSpec(t *testing.T) {
-	if TestServer == nil {
-		t.Error("测试服务客户端为空")
-		return
-	}
-	TestClient = TestServer.GetTestLogin(t, rbac.LoginUrl, rbac.LoginResponse)
+	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
+	TestClient.Login(rbac.LoginUrl, nil)
 	if TestClient == nil {
 		return
 	}
@@ -101,11 +94,8 @@ func TestModifyJobSpec(t *testing.T) {
 }
 
 func TestExecSerJob(t *testing.T) {
-	if TestServer == nil {
-		t.Error("测试服务客户端为空")
-		return
-	}
-	TestClient = TestServer.GetTestLogin(t, rbac.LoginUrl, rbac.LoginResponse)
+	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
+	TestClient.Login(rbac.LoginUrl, nil)
 	if TestClient == nil {
 		return
 	}

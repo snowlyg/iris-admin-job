@@ -2,18 +2,22 @@ package job
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"time"
 
+	"github.com/robfig/cron/v3"
 	"github.com/snowlyg/iris-admin/server/cron_server"
 	"github.com/snowlyg/iris-admin/server/database"
 	"github.com/snowlyg/iris-admin/server/database/orm"
 	"github.com/snowlyg/iris-admin/server/database/scope"
 	"github.com/snowlyg/iris-admin/server/zap_server"
+	"gorm.io/gorm"
 )
 
+const DefaultCronJobSpec = "@every 5m"
+
 var ErrCronExpression = errors.New("错误的CRON表达式")
-var DefaultCronJobSpec = "@every 5m"
 
 // StartJob
 func StartJob() {
@@ -26,28 +30,23 @@ func StopJob() {
 
 // LogicExecJob 执行任务
 func LogicExecJob(id uint) error {
-	// response := &Response{}
-	// err := response.First(database.Instance(), scope.IdScope(id))
-	// if err != nil {
-	// 	return err
-	// }
+	response := &Response{}
+	err := response.First(database.Instance(), scope.IdScope(id))
+	if err != nil {
+		return err
+	}
 
-	// if response.Status == "running" {
-	// 	return cron_server.ErrStartServer
-	// }
+	if response.Status == "running" {
+		return cron_server.ErrStartServer
+	}
 
-	// BuiltinJob.RLock()
-	// defer BuiltinJob.RUnlock()
-
-	// jobServer := BuiltinJob.jobs[response.Name]
-
-	// once := time.Now().Add(2 * time.Second)
-	// onceSpec := fmt.Sprintf("%d %d %d %d %d %d", once.Second(), once.Minute(), once.Hour(), once.Day(), once.Month(), once.Weekday())
-	// _, err = cron_server.CronInstance().AddJob(onceSpec, jobServer)
-	// if err != nil {
-	// 	return err
-	// }
-	// cron_server.CronInstance().Run()
+	once := time.Now().Add(2 * time.Second)
+	onceSpec := fmt.Sprintf("%d %d %d %d %d %d", once.Second(), once.Minute(), once.Hour(), once.Day(), once.Month(), once.Weekday())
+	_, err = cron_server.CronInstance().AddJob(onceSpec, BuiltinJobs.GetBuiltinJob(response.Name))
+	if err != nil {
+		return err
+	}
+	cron_server.CronInstance().Run()
 
 	return nil
 }
@@ -109,13 +108,11 @@ func LogicModifyStatus(id uint, status string) error {
 		cron_server.CronInstance().Remove(response.EntryId)
 		cron_server.CronInstance().Run()
 	} else if status == "running" {
-		// BuiltinJob.RLock()
-		// defer BuiltinJob.RUnlock()
-		// entryId, err := cron_server.CronInstance().AddJob(response.Spec, BuiltinJob.jobs[response.Name])
-		// if err != nil {
-		// 	return err
-		// }
-		// data["entry_id"] = entryId
+		entryId, err := cron_server.CronInstance().AddJob(response.Spec, BuiltinJobs.GetBuiltinJob(response.Name))
+		if err != nil {
+			return err
+		}
+		data["entry_id"] = entryId
 		cron_server.CronInstance().Run()
 	}
 
@@ -128,46 +125,49 @@ func LogicModifyStatus(id uint, status string) error {
 	return nil
 }
 
-// SyncJob
-func SyncJob(jobName, desc string) error {
-	// BuiltinJob.RLock()
-	// defer BuiltinJob.RUnlock()
-	// response := &Response{}
-	// err := response.First(database.Instance(), NameScope(jobName), IpScope(global.LocalIP()))
-	// if errors.Is(err, gorm.ErrRecordNotFound) {
-	// 	entryId, err := cron_server.CronInstance().AddJob(DefaultCronJobSpec, BuiltinJob.jobs[jobName])
-	// 	if err != nil {
-	// 		zap_server.ZAPLOG.Error(err.Error())
-	// 		return err
-	// 	}
-	// 	zap_server.ZAPLOG.Debug("任务持久化....")
-	// 	req := &Request{BaseJob: BaseJob{EntryId: entryId, Name: jobName, Ip: global.LocalIP(), Spec: DefaultCronJobSpec, Status: "running", Desc: desc}}
-	// 	_, err = LogicCreate(req)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// } else if err == nil {
-	// 	entryId, err := cron_server.CronInstance().AddJob(response.Spec, BuiltinJob.jobs[jobName])
-	// 	if err != nil {
-	// 		zap_server.ZAPLOG.Error(err.Error())
-	// 		return err
-	// 	}
-	// 	zap_server.ZAPLOG.Debug("任务更新....")
-	// 	data := map[string]interface{}{"status": "running", "entry_id": entryId}
-	// 	err = database.Instance().Model(&Job{}).Where("id = ?", response.Id).Updates(data).Error
-	// 	if err != nil {
-	// 		zap_server.ZAPLOG.Error(err.Error())
-	// 		return err
-	// 	}
-	// }
+// syncJob
+func syncJob(jobName, spec, desc string, job cron.Job) error {
+
+	if spec == "" {
+		spec = DefaultCronJobSpec
+	}
+
+	response := &Response{}
+	err := response.First(database.Instance(), NameScope(jobName))
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		entryId, err := cron_server.CronInstance().AddJob(spec, job)
+		if err != nil {
+			zap_server.ZAPLOG.Error(err.Error())
+			return err
+		}
+		zap_server.ZAPLOG.Debug("任务持久化....")
+		req := &Request{BaseJob: BaseJob{EntryId: entryId, Name: jobName, Spec: spec, Status: "running", Desc: desc}}
+		_, err = LogicCreate(req)
+		if err != nil {
+			return err
+		}
+	} else if err == nil {
+		entryId, err := cron_server.CronInstance().AddJob(response.Spec, job)
+		if err != nil {
+			zap_server.ZAPLOG.Error(err.Error())
+			return err
+		}
+		zap_server.ZAPLOG.Debug("任务更新....")
+		data := map[string]interface{}{"status": "running", "entry_id": entryId}
+		err = database.Instance().Model(&Job{}).Where("id = ?", response.Id).Updates(data).Error
+		if err != nil {
+			zap_server.ZAPLOG.Error(err.Error())
+			return err
+		}
+	}
 
 	return nil
 }
 
 // UpdateExecInfo
-func UpdateExecInfo(jobName, ip, message string) error {
+func UpdateExecInfo(jobName, message string) error {
 	response := &Response{}
-	err := response.First(database.Instance(), NameScope(jobName), IpScope(ip))
+	err := response.First(database.Instance(), NameScope(jobName))
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,6 @@ package tests
 
 import (
 	_ "embed"
-	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -11,7 +10,7 @@ import (
 	job_gin "github.com/snowlyg/iris-admin-job/gin"
 	"github.com/snowlyg/iris-admin-job/gin/job"
 	"github.com/snowlyg/iris-admin/server/web"
-	web_tests "github.com/snowlyg/iris-admin/server/web/tests"
+	"github.com/snowlyg/iris-admin/server/web/common"
 	"github.com/snowlyg/iris-admin/server/web/web_gin"
 )
 
@@ -21,19 +20,16 @@ var TestClient *httptest.Client
 func TestMain(m *testing.M) {
 	web.CONFIG.System.Level = "test"
 	var uuid string
-	uuid, TestServer = web_tests.BeforeTestMainGin(job_gin.PartyFunc, job_gin.SeedFunc)
+	uuid, TestServer = common.BeforeTestMainGin(job_gin.PartyFunc, job_gin.SeedFunc)
 
 	go job.StartJob() // 服务监控
 
 	time.Sleep(5 * time.Second)
 	code := m.Run()
 
-	web_tests.AfterTestMain(uuid, true)
+	common.AfterTestMain(uuid, true)
 	job.StopJob()
 
-	err := web.Remove()
-	if err != nil {
-		fmt.Println(err)
-	}
+	web.Remove()
 	os.Exit(code)
 }
