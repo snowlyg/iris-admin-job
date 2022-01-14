@@ -10,7 +10,6 @@ package main
 import (
 	"github.com/snowlyg/iris-admin/server/web"
 	"github.com/snowlyg/iris-admin/server/web/web_gin"
-  rbac "github.com/snowlyg/iris-admin-rbac/gin"
   job "github.com/snowlyg/iris-admin-job/gin"
 )
 
@@ -18,7 +17,6 @@ func main() {
   wi := web_gin.Init()
   v1 := wi.GetRouterGroup("/api/v1")
 	{
-		rbac.Party(v1)
 		job.Party(v1)
 	}
 	web.Start(wi)

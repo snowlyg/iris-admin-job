@@ -1,7 +1,6 @@
 package job
 
 import (
-	"fmt"
 	"sync"
 	"time"
 
@@ -32,7 +31,7 @@ func (item *Job) Create(db *gorm.DB) (uint, error) {
 	err := db.Model(item).Create(item).Error
 	if err != nil {
 		zap_server.ZAPLOG.Error(err.Error())
-		return item.ID, fmt.Errorf("添加失败:%w", err)
+		return 0, err
 	}
 	return item.ID, nil
 }
@@ -48,7 +47,7 @@ func (item *Job) Update(db *gorm.DB, scopes ...func(db *gorm.DB) *gorm.DB) error
 	err := db.Model(item).Scopes(scopes...).Updates(data).Error
 	if err != nil {
 		zap_server.ZAPLOG.Error(err.Error())
-		return fmt.Errorf("更新失败:%w", err)
+		return err
 	}
 	return nil
 }
@@ -58,7 +57,7 @@ func (item *Job) Delete(db *gorm.DB, scopes ...func(db *gorm.DB) *gorm.DB) error
 	err := db.Model(item).Unscoped().Scopes(scopes...).Delete(item).Error
 	if err != nil {
 		zap_server.ZAPLOG.Error(err.Error())
-		return fmt.Errorf("删除失败:%w", err)
+		return err
 	}
 	return nil
 }
