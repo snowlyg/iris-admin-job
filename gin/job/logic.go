@@ -140,26 +140,25 @@ func syncJob(jobName, spec, desc string, job cron.Job) error {
 			zap_server.ZAPLOG.Error(err.Error())
 			return err
 		}
-		zap_server.ZAPLOG.Debug("任务持久化....")
 		req := &Request{BaseJob: BaseJob{EntryId: entryId, Name: jobName, Spec: spec, Status: "running", Desc: desc}}
 		_, err = LogicCreate(req)
 		if err != nil {
 			return err
 		}
-	} else if err == nil {
-		entryId, err := cron_server.CronInstance().AddJob(response.Spec, job)
-		if err != nil {
-			zap_server.ZAPLOG.Error(err.Error())
-			return err
-		}
-		zap_server.ZAPLOG.Debug("任务更新....")
-		data := map[string]interface{}{"status": "running", "entry_id": entryId}
-		err = database.Instance().Model(&Job{}).Where("id = ?", response.Id).Updates(data).Error
-		if err != nil {
-			zap_server.ZAPLOG.Error(err.Error())
-			return err
-		}
 	}
+	//  else if err == nil {
+	// 	entryId, err := cron_server.CronInstance().AddJob(response.Spec, job)
+	// 	if err != nil {
+	// 		zap_server.ZAPLOG.Error(err.Error())
+	// 		return err
+	// 	}
+	// 	data := map[string]interface{}{"status": "running", "entry_id": entryId}
+	// 	err = database.Instance().Model(&Job{}).Where("id = ?", response.Id).Updates(data).Error
+	// 	if err != nil {
+	// 		zap_server.ZAPLOG.Error(err.Error())
+	// 		return err
+	// 	}
+	// }
 
 	return nil
 }
