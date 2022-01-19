@@ -26,6 +26,16 @@ func StartJob() {
 
 func StopJob() {
 	cron_server.CronInstance().Stop()
+	clearJob()
+}
+
+func clearJob() error {
+	err := database.Instance().Unscoped().Where("1=1").Delete(&Job{}).Error
+	if err != nil {
+		zap_server.ZAPLOG.Error(err.Error())
+		return err
+	}
+	return nil
 }
 
 // LogicExecJob 执行任务
