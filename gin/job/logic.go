@@ -24,11 +24,13 @@ func StartJob() {
 	cron_server.CronInstance().Start()
 }
 
+// StopJob
 func StopJob() {
 	cron_server.CronInstance().Stop()
 	clearJob()
 }
 
+// OnceJob
 func OnceJob(cmd cron.Job, d time.Duration) {
 	once := time.Now().Add(d)
 	onceSpec := fmt.Sprintf("%d %d %d %d %d %d", once.Second(), once.Minute(), once.Hour(), once.Day(), once.Month(), once.Weekday())
@@ -36,6 +38,7 @@ func OnceJob(cmd cron.Job, d time.Duration) {
 	cron_server.CronInstance().Run()
 }
 
+// clearJob
 func clearJob() error {
 	err := database.Instance().Unscoped().Where("1=1").Delete(&Job{}).Error
 	if err != nil {

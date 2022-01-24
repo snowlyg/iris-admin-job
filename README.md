@@ -74,3 +74,11 @@ func yourJobRun() error {
 	job.BuiltinJobs.AddBuiltinJob("yourJobRun", "@every 1m", "yourJobRun", &YourJob{})
 	job.StartJob()
 ```
+
+##### 单次任务
+
+```go
+  // run your job after 2 second 
+	job.OnceJob(&YourJob{},2*time.Second)
+	job.StartJob()
+```
