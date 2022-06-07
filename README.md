@@ -16,22 +16,24 @@
 package main
 
 import (
-  "github.com/snowlyg/iris-admin/server/web"
-  "github.com/snowlyg/iris-admin/server/web/web_gin"
-  job "github.com/snowlyg/iris-admin-job/gin"
+	job_gin "github.com/snowlyg/iris-admin-job/gin"
+	"github.com/snowlyg/iris-admin-job/gin/job"
+	"github.com/snowlyg/iris-admin/server/web"
+	"github.com/snowlyg/iris-admin/server/web/web_gin"
+	"github.com/snowlyg/iris-admin/server/zap_server"
 )
 
 func main() {
-  wi := web_gin.Init()
-  v1 := wi.GetRouterGroup("/api/v1")
-  {
-    job.Party(v1)
-  }
-  go func(){
-      job.BuiltinJobs.AddBuiltinJob("yourJobRun", "@every 1m", "yourJobRun", &YourJob{})
-      job.StartJob()
-  }()
-  web.Start(wi)
+	wi := web_gin.Init()
+	v1 := wi.GetRouterGroup("/api/v1")
+	{
+		job_gin.Party(v1)
+	}
+	go func() {
+		job.BuiltinJobs.AddBuiltinJob("yourJobRun", "@every 1m", "yourJobRun", &YourJob{})
+		job.StartJob()
+	}()
+	web.Start(wi)
 }
 
 ```

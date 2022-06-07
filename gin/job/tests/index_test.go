@@ -42,8 +42,8 @@ func TestJobList(t *testing.T) {
 			{Key: "total", Value: 0, Type: "ge"},
 		}},
 	}
-	httptest.RequestParams = map[string]interface{}{"page": 1, "pageSize": 10, "orderBy": "id", "sort": "asc"}
-	TestClient.GET(fmt.Sprintf("%s/list", Uri), pageKeys, httptest.RequestParams)
+	query := map[string]interface{}{"page": 1, "pageSize": 10, "orderBy": "id", "sort": "asc"}
+	TestClient.GET(fmt.Sprintf("%s/list", Uri), pageKeys, httptest.NewWithQueryObjectParamFunc(query))
 }
 
 func TestModifyStatus(t *testing.T) {
@@ -68,7 +68,7 @@ func TestModifyStatus(t *testing.T) {
 		{Key: "status", Value: http.StatusOK},
 		{Key: "message", Value: response.ResponseOkMessage},
 	}
-	TestClient.POST(fmt.Sprintf("%s/modifyStatus/%d", Uri, id), pageKeys, data)
+	TestClient.POST(fmt.Sprintf("%s/modifyStatus/%d", Uri, id), pageKeys, httptest.NewWithJsonParamFunc(data))
 }
 
 func TestModifyJobSpec(t *testing.T) {
@@ -90,7 +90,7 @@ func TestModifyJobSpec(t *testing.T) {
 		{Key: "status", Value: http.StatusOK},
 		{Key: "message", Value: response.ResponseOkMessage},
 	}
-	TestClient.POST(fmt.Sprintf("%s/modifyJobSpec/%d", Uri, id), pageKeys, data)
+	TestClient.POST(fmt.Sprintf("%s/modifyJobSpec/%d", Uri, id), pageKeys, httptest.NewWithJsonParamFunc(data))
 }
 
 func TestExecSerJob(t *testing.T) {
