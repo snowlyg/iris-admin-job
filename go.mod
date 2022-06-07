@@ -1,15 +1,15 @@
 module github.com/snowlyg/iris-admin-job
 
-go 1.17
+go 1.18
 
 require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/snowlyg/helper v0.0.6
-	github.com/snowlyg/httptest v0.0.5
-	github.com/snowlyg/iris-admin v1.1.6-alpha3
-	github.com/snowlyg/iris-admin-rbac v0.0.8
+	github.com/snowlyg/helper v0.0.7
+	github.com/snowlyg/httptest v0.0.6
+	github.com/snowlyg/iris-admin v1.1.7
+	github.com/snowlyg/iris-admin-rbac v0.0.9
 	github.com/snowlyg/multi v0.0.3
 	gorm.io/gorm v1.22.4
 )
