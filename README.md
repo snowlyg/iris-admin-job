@@ -2,6 +2,11 @@
 
 [IrisAdminJob](https://www.github.com/snowlyg/iris-admin-job) 项目为一个任务管模块插件,可以为 [IrisAdmin](https://www.github.com/snowlyg/iris-admin) 项目快速集成任务管理API.
 
+[![Build Status](https://app.travis-ci.com/snowlyg/iris-admin-job.svg?branch=main)](https://app.travis-ci.com/snowlyg/iris-admin-job)
+[![LICENSE](https://img.shields.io/github/license/snowlyg/iris-admin-job)](https://github.com/snowlyg/iris-admin-job/blob/main/LICENSE)
+[![go doc](https://godoc.org/github.com/snowlyg/iris-admin-job?status.svg)](https://godoc.org/github.com/snowlyg/iris-admin-job)
+[![go report](https://goreportcard.com/badge/github.com/snowlyg/iris-admin-job)](https://goreportcard.com/badge/github.com/snowlyg/iris-admin-job)
+[![Build Status](https://codecov.io/gh/snowlyg/iris-admin-job/branch/main/graph/badge.svg)](https://codecov.io/gh/snowlyg/iris-admin-job)
 ##### 下载
 
 ```sh
