@@ -9,7 +9,6 @@ import (
 	"github.com/robfig/cron/v3"
 	"github.com/snowlyg/iris-admin/server/cron_server"
 	"github.com/snowlyg/iris-admin/server/database"
-	"github.com/snowlyg/iris-admin/server/database/orm"
 	"github.com/snowlyg/iris-admin/server/database/scope"
 	"github.com/snowlyg/iris-admin/server/zap_server"
 	"gorm.io/gorm"
@@ -73,12 +72,14 @@ func LogicExecJob(id uint) error {
 
 // LogicCreate 添加
 func LogicCreate(req *Request) (uint, error) {
-	return orm.Create(database.Instance(), &Job{BaseJob: req.BaseJob})
+	j := &Job{BaseJob: req.BaseJob}
+	return j.Create(database.Instance())
 }
 
 // LogicUpdate 更新
 func LogicUpdate(id uint, req *Request) error {
-	return orm.Update(database.Instance(), id, &Job{BaseJob: req.BaseJob})
+	j := &Job{BaseJob: req.BaseJob}
+	return j.Update(database.Instance(), scope.IdScope(id))
 }
 
 // LogicModifyJobSpec 更新任务条件
@@ -89,7 +90,7 @@ func LogicModifyJobSpec(id uint, spec string) error {
 	}
 
 	response := &Response{}
-	err := orm.First(database.Instance(), response, scope.IdScope(id))
+	err := response.First(database.Instance(), scope.IdScope(id))
 	if err != nil {
 		return err
 	}
@@ -114,7 +115,7 @@ func LogicModifyJobSpec(id uint, spec string) error {
 func LogicModifyStatus(id uint, status string) error {
 	data := map[string]interface{}{"status": status}
 	response := &Response{}
-	err := orm.First(database.Instance(), response, scope.IdScope(id))
+	err := response.First(database.Instance(), scope.IdScope(id))
 	if err != nil {
 		return err
 	}

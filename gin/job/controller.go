@@ -3,7 +3,6 @@ package job
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/snowlyg/iris-admin/server/database"
-	"github.com/snowlyg/iris-admin/server/database/orm"
 	"github.com/snowlyg/iris-admin/server/web/web_gin/request"
 	"github.com/snowlyg/iris-admin/server/web/web_gin/response"
 	"gorm.io/gorm"
@@ -24,7 +23,7 @@ func All(ctx *gin.Context) {
 	if req.Status != "" {
 		scopes = append(scopes, StatusScope(req.Status))
 	}
-	total, err := orm.Pagination(database.Instance(), items, req.PaginateScope(), scopes...)
+	total, err := items.Paginate(database.Instance(), req.PaginateScope(), scopes...)
 	if err != nil {
 		response.FailWithMessage(err.Error(), ctx)
 		return
@@ -39,7 +38,7 @@ func All(ctx *gin.Context) {
 
 // ModifyStatus 更新状态
 func ModifyStatus(ctx *gin.Context) {
-	var req request.GetById
+	var req request.IdBinding
 	if errs := ctx.ShouldBindUri(&req); errs != nil {
 		response.FailWithMessage(errs.Error(), ctx)
 		return
@@ -59,7 +58,7 @@ func ModifyStatus(ctx *gin.Context) {
 
 // ModifyJobSpec 更新任务条件
 func ModifyJobSpec(ctx *gin.Context) {
-	var req request.GetById
+	var req request.IdBinding
 	if errs := ctx.ShouldBindUri(&req); errs != nil {
 		response.FailWithMessage(errs.Error(), ctx)
 		return
@@ -79,7 +78,7 @@ func ModifyJobSpec(ctx *gin.Context) {
 
 // ExecJob 执行任务
 func ExecJob(ctx *gin.Context) {
-	var req request.GetById
+	var req request.IdBinding
 	if errs := ctx.ShouldBindUri(&req); errs != nil {
 		response.FailWithMessage(errs.Error(), ctx)
 		return

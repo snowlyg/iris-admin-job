@@ -14,8 +14,8 @@ import (
 )
 
 func TestJobList(t *testing.T) {
-	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
-	TestClient.Login(rbac.LoginUrl, nil)
+	TestClient = httptest.Instance(t, TestServer.GetEngine(), str.Join("http://", web.CONFIG.System.Addr))
+	TestClient.Login(rbac.LoginUrl, "", httptest.LoginResponse)
 	if TestClient == nil {
 		return
 	}
@@ -47,8 +47,8 @@ func TestJobList(t *testing.T) {
 }
 
 func TestModifyStatus(t *testing.T) {
-	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
-	TestClient.Login(rbac.LoginUrl, nil)
+	TestClient = httptest.Instance(t, TestServer.GetEngine(), str.Join("http://", web.CONFIG.System.Addr))
+	TestClient.Login(rbac.LoginUrl, "", httptest.LoginResponse)
 	if TestClient == nil {
 		return
 	}
@@ -72,8 +72,8 @@ func TestModifyStatus(t *testing.T) {
 }
 
 func TestModifyJobSpec(t *testing.T) {
-	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
-	TestClient.Login(rbac.LoginUrl, nil)
+	TestClient = httptest.Instance(t, TestServer.GetEngine(), str.Join("http://", web.CONFIG.System.Addr))
+	TestClient.Login(rbac.LoginUrl, "", httptest.LoginResponse)
 	if TestClient == nil {
 		return
 	}
@@ -94,8 +94,8 @@ func TestModifyJobSpec(t *testing.T) {
 }
 
 func TestExecSerJob(t *testing.T) {
-	TestClient = httptest.Instance(t, str.Join("http://", web.CONFIG.System.Addr), TestServer.GetEngine())
-	TestClient.Login(rbac.LoginUrl, nil)
+	TestClient = httptest.Instance(t, TestServer.GetEngine(), str.Join("http://", web.CONFIG.System.Addr))
+	TestClient.Login(rbac.LoginUrl, "", httptest.LoginResponse)
 	if TestClient == nil {
 		return
 	}
