@@ -1,6 +1,8 @@
 package job
 
 import (
+	"errors"
+
 	"github.com/snowlyg/iris-admin/server/database/orm"
 	"github.com/snowlyg/iris-admin/server/zap_server"
 	"gorm.io/gorm"
@@ -13,7 +15,7 @@ type Response struct {
 
 func (res *Response) First(db *gorm.DB, scopes ...func(db *gorm.DB) *gorm.DB) error {
 	err := db.Model(&Job{}).Scopes(scopes...).First(res).Error
-	if err != nil {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		zap_server.ZAPLOG.Error(err.Error())
 		return err
 	}
@@ -34,7 +36,7 @@ func (res *PageResponse) Paginate(db *gorm.DB, pageScope func(db *gorm.DB) *gorm
 		return count, err
 	}
 	err = db.Scopes(pageScope).Find(&res.Item).Error
-	if err != nil {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		zap_server.ZAPLOG.Error(err.Error())
 		return count, err
 	}
@@ -44,7 +46,7 @@ func (res *PageResponse) Paginate(db *gorm.DB, pageScope func(db *gorm.DB) *gorm
 func (res *PageResponse) Find(db *gorm.DB, scopes ...func(db *gorm.DB) *gorm.DB) error {
 	db = db.Model(&Job{})
 	err := db.Scopes(scopes...).Find(&res.Item).Error
-	if err != nil {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		zap_server.ZAPLOG.Error(err.Error())
 		return err
 	}
