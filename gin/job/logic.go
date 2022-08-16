@@ -11,7 +11,6 @@ import (
 	"github.com/snowlyg/iris-admin/server/database"
 	"github.com/snowlyg/iris-admin/server/database/scope"
 	"github.com/snowlyg/iris-admin/server/zap_server"
-	"gorm.io/gorm"
 )
 
 const DefaultCronJobSpec = "@every 5m"
@@ -155,7 +154,10 @@ func syncJob(jobName, spec, desc string, job cron.Job) error {
 
 	response := &Response{}
 	err := response.First(database.Instance(), NameScope(jobName))
-	if errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil {
+		return err
+	}
+	if response.Id == 0 {
 		entryId, err := cron_server.CronInstance().AddJob(spec, job)
 		if err != nil {
 			zap_server.ZAPLOG.Error(err.Error())
