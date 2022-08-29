@@ -8,7 +8,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/snowlyg/helper v0.0.7
 	github.com/snowlyg/httptest v0.0.8
-	github.com/snowlyg/iris-admin v1.1.8
+	github.com/snowlyg/iris-admin v1.1.91
 	github.com/snowlyg/iris-admin-rbac v0.1.0
 	github.com/snowlyg/multi v0.0.4
 	gorm.io/gorm v1.22.4
