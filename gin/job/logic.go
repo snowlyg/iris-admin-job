@@ -16,6 +16,7 @@ import (
 const DefaultCronJobSpec = "@every 5m"
 
 var ErrCronExpression = errors.New("错误的CRON表达式")
+var ErrStartServer = errors.New("启动服务错误")
 
 // StartJob
 func StartJob() {
@@ -55,7 +56,7 @@ func LogicExecJob(id uint) error {
 	}
 
 	if response.Status == "running" {
-		return cron_server.ErrStartServer
+		return ErrStartServer
 	}
 
 	once := time.Now().Add(2 * time.Second)

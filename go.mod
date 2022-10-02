@@ -7,9 +7,9 @@ require (
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/snowlyg/helper v0.0.7
-	github.com/snowlyg/httptest v0.0.8
-	github.com/snowlyg/iris-admin v1.1.91
-	github.com/snowlyg/iris-admin-rbac v0.1.0
+	github.com/snowlyg/httptest v0.0.91
+	github.com/snowlyg/iris-admin v1.2.0
+	github.com/snowlyg/iris-admin-rbac v0.1.1-0.20221002145036-86b244f067d4
 	github.com/snowlyg/multi v0.0.4
 	gorm.io/gorm v1.22.4
 )
@@ -128,7 +128,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.19.1 // indirect
-	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
+	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/image v0.0.0-20190802002840-cff245a6509b // indirect
 	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
 	golang.org/x/sys v0.0.0-20220608164250-635b8c9b7f68 // indirect
