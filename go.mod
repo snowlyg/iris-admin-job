@@ -6,11 +6,11 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/snowlyg/helper v0.1.0
+	github.com/snowlyg/helper v0.1.33
 	github.com/snowlyg/httptest v0.0.91
-	github.com/snowlyg/iris-admin v1.2.0
-	github.com/snowlyg/iris-admin-rbac v0.1.1-0.20221008034338-5985d2926796
-	github.com/snowlyg/multi v0.0.41
+	github.com/snowlyg/iris-admin v1.2.1
+	github.com/snowlyg/iris-admin-rbac v0.1.11
+	github.com/snowlyg/multi v0.0.42
 	gorm.io/gorm v1.22.4
 )
 
