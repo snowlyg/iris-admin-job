@@ -9,7 +9,7 @@ require (
 	github.com/snowlyg/helper v0.1.37
 	github.com/snowlyg/httptest v0.1.12
 	github.com/snowlyg/iris-admin v1.2.12
-	github.com/snowlyg/iris-admin-rbac v0.1.14
+	github.com/snowlyg/iris-admin-rbac v0.1.15
 	github.com/snowlyg/multi v0.0.42
 	gorm.io/gorm v1.22.4
 )
